@@ -1,0 +1,21 @@
+{
+  "kind": "development-integration",
+  "steps": [
+    {
+      "student": "Gradient descent changes the parameters of a model to reduce its loss.",
+      "buddy": "That's a solid start! You mentioned reducing loss, but how exactly does the algorithm know which way to move? Does it just guess randomly, or is there a specific direction it follows based on the slope of the loss function?",
+      "seconds": 63.64
+    },
+    {
+      "student": "We move in the same direction as the gradient because the gradient points downhill.",
+      "buddy": "Actually, the gradient points uphill (steepest increase). We move in the *opposite* direction to go downhill. Can you clarify why moving with the gradient would reduce loss?",
+      "seconds": 28.97
+    },
+    {
+      "student": "I need to correct that: the gradient points towards increasing loss, so we update in the opposite direction. If the gradient is positive, subtracting it decreases the parameter.",
+      "buddy": "Got it! So you're saying we subtract the gradient because it points uphill, right? Can you give a quick example of what happens if we accidentally added the gradient instead?",
+      "seconds": 28.47
+    }
+  ],
+  "session_id": "70cf9e15-eb01-4942-824d-8412d591eb0e"
+}

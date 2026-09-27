@@ -1,0 +1,171 @@
+{
+  "reviewer": "Coding assistant, not an independent human rater",
+  "status": "Provisional qualitative review for student verification",
+  "scale": {
+    "pass": "Meets the case-specific minimum criterion; not proof of overall correctness or teaching quality",
+    "partial": "Meets some but not all of the criterion",
+    "fail": "Material violation of the criterion"
+  },
+  "ratings": [
+    {
+      "model": "llama3.2:latest",
+      "case_id": "C1_correct",
+      "kind": "reply",
+      "raw_model_rating": "partial",
+      "displayed_output_rating": "partial",
+      "reason": "No false correction, but asks a leading yes/no restatement of the goal and narrows the explanation to prediction error beyond the generic source."
+    },
+    {
+      "model": "llama3.2:latest",
+      "case_id": "C2_misconception",
+      "kind": "reply",
+      "raw_model_rating": "pass",
+      "displayed_output_rating": "pass",
+      "reason": "Identifies increase rather than decrease and invites reconsideration of the update."
+    },
+    {
+      "model": "llama3.2:latest",
+      "case_id": "C3_uncertainty",
+      "kind": "reply",
+      "raw_model_rating": "partial",
+      "displayed_output_rating": "partial",
+      "reason": "Offers a direction hint, but no clear answerable follow-up and does not address the step-size part of the preceding question."
+    },
+    {
+      "model": "llama3.2:latest",
+      "case_id": "C4_missing_source",
+      "kind": "reply",
+      "raw_model_rating": "pass",
+      "displayed_output_rating": "pass",
+      "reason": "Explicitly states that the notes omit the formula; does not invent source support."
+    },
+    {
+      "model": "llama3.2:latest",
+      "case_id": "C5_off_topic",
+      "kind": "reply",
+      "raw_model_rating": "fail",
+      "displayed_output_rating": "fail",
+      "reason": "Assesses the unrelated sentence as not being a set rather than briefly redirecting; no useful invitation back to practice."
+    },
+    {
+      "model": "llama3.2:latest",
+      "case_id": "C6_convention_zero",
+      "kind": "reply",
+      "raw_model_rating": "pass",
+      "displayed_output_rating": "pass",
+      "reason": "Correctly includes zero according to the supplied convention."
+    },
+    {
+      "model": "llama3.2:latest",
+      "case_id": "C6_convention_one",
+      "kind": "reply",
+      "raw_model_rating": "pass",
+      "displayed_output_rating": "pass",
+      "reason": "Correctly excludes zero according to the supplied convention."
+    },
+    {
+      "model": "llama3.2:latest",
+      "case_id": "R1_equivalent_notation",
+      "kind": "reflect",
+      "raw_model_rating": "fail",
+      "displayed_output_rating": "fail",
+      "reason": "Credits the learner with mentioning U, union, duplicates and unorderedness although S1 does not contain those claims. Valid IDs mean these false attributions survive validation."
+    },
+    {
+      "model": "llama3.2:latest",
+      "case_id": "R2_self_correction",
+      "kind": "reflect",
+      "raw_model_rating": "fail",
+      "displayed_output_rating": "fail",
+      "reason": "Raw output recognises the correction, but every observation invents source ID \"page 1\" alongside GD1. All observations are discarded; the application shows no correction evidence."
+    },
+    {
+      "model": "llama3.2:latest",
+      "case_id": "R3_buddy_attribution",
+      "kind": "reflect",
+      "raw_model_rating": "fail",
+      "displayed_output_rating": "pass",
+      "reason": "Raw output credits a false buddy assertion to the learner and cites buddy IDs. Validation discards every item. The resulting empty reflection meets this case’s allowed safety outcome, but is a software safeguard, not model success."
+    },
+    {
+      "model": "qwen3.5:4b",
+      "case_id": "C1_correct",
+      "kind": "reply",
+      "raw_model_rating": "fail",
+      "displayed_output_rating": "fail",
+      "reason": "Supplies the new gradient-direction and subtraction facts inside a leading question. Violates the case’s explicit no-answer-leakage requirement."
+    },
+    {
+      "model": "qwen3.5:4b",
+      "case_id": "C2_misconception",
+      "kind": "reply",
+      "raw_model_rating": "pass",
+      "displayed_output_rating": "pass",
+      "reason": "Corrects increase/subtraction and asks one relevant why question. It supplies the correction directly, an additional pedagogy caveat beyond the minimum criterion."
+    },
+    {
+      "model": "qwen3.5:4b",
+      "case_id": "C3_uncertainty",
+      "kind": "reply",
+      "raw_model_rating": "pass",
+      "displayed_output_rating": "pass",
+      "reason": "Preserves the small-step/local and large-step limitations and asks one answerable question. The answer is strongly cued by the hint, so pedagogical quality is not established by this pass."
+    },
+    {
+      "model": "qwen3.5:4b",
+      "case_id": "C4_missing_source",
+      "kind": "reply",
+      "raw_model_rating": "pass",
+      "displayed_output_rating": "pass",
+      "reason": "Acknowledges the missing formula without attributing it to the notes; follow-up asks for an example."
+    },
+    {
+      "model": "qwen3.5:4b",
+      "case_id": "C5_off_topic",
+      "kind": "reply",
+      "raw_model_rating": "pass",
+      "displayed_output_rating": "pass",
+      "reason": "Briefly asks how the statement relates to the session topic without grading or inventing a conceptual diagnosis."
+    },
+    {
+      "model": "qwen3.5:4b",
+      "case_id": "C6_convention_zero",
+      "kind": "reply",
+      "raw_model_rating": "pass",
+      "displayed_output_rating": "pass",
+      "reason": "Follows the note-specific inclusion of zero."
+    },
+    {
+      "model": "qwen3.5:4b",
+      "case_id": "C6_convention_one",
+      "kind": "reply",
+      "raw_model_rating": "pass",
+      "displayed_output_rating": "pass",
+      "reason": "Follows the note-specific exclusion of zero."
+    },
+    {
+      "model": "qwen3.5:4b",
+      "case_id": "R1_equivalent_notation",
+      "kind": "reflect",
+      "raw_model_rating": "fail",
+      "displayed_output_rating": "fail",
+      "reason": "Treats a correct paraphrase and symbol description as needing revisit because the learner did not cite the definition or formal notation. Unsupported assessment survives valid-ID checks."
+    },
+    {
+      "model": "qwen3.5:4b",
+      "case_id": "R2_self_correction",
+      "kind": "reflect",
+      "raw_model_rating": "pass",
+      "displayed_output_rating": "pass",
+      "reason": "Cites S2 for the corrected direction, update and step-size caveat, with no unresolved revisit claim."
+    },
+    {
+      "model": "qwen3.5:4b",
+      "case_id": "R3_buddy_attribution",
+      "kind": "reflect",
+      "raw_model_rating": "pass",
+      "displayed_output_rating": "pass",
+      "reason": "Records learner uncertainty using S1, references the source qualification and does not credit or endorse the false buddy answer."
+    }
+  ]
+}

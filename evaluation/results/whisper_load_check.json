@@ -1,0 +1,7 @@
+{
+  "check": "local Whisper base checkpoint load only",
+  "success": true,
+  "seconds": 0.932,
+  "device": "cpu",
+  "limitation": "Does not verify transcription accuracy or microphone/browser capture."
+}

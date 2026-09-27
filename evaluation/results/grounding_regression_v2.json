@@ -1,0 +1,165 @@
+{
+  "kind": "targeted-development-generation-probes",
+  "model": "qwen3.5:4b",
+  "conversation_prompt": "conversation-v2",
+  "reflection_prompt": "reflection-v2",
+  "sources": [
+    {
+      "id": "P1C1",
+      "page": 1,
+      "text": "Gradient descent Study notes | One topic, five subtopics and one figure 1. Purpose Gradient descent is an optimisation algorithm. It is used, for example, to adjust the parameters of a machine learning model. A loss function measures how poorly a chosen set of parameters performs on the learning task. The objective is to find parameters with a lower loss. 2. Gradient direction For a differentiable loss function, the gradient points in the direction of steepest local increase in loss, using the usual Euclidean notion of direction. It does not point towards the steepest decrease. In one dimension, the gradient is the derivative of the loss with respect to the parameter. 3. Parameter updates Gradient descent updates parameters in the direction opposite to the gradient. For one parameter w, the update is: w_new = w_old - learning_rate * gradient Here, the gradient is evaluated at the current parameter value and the learning rate is positive. Subtracting a positive gradient decreases w. Subtracting a negative gradient increases w. Scope These notes describe ordinary gradient descent on a differentiable loss. They do"
+    },
+    {
+      "id": "P1C2",
+      "page": 1,
+      "text": "the learning rate is positive. Subtracting a positive gradient decreases w. Subtracting a negative gradient increases w. Scope These notes describe ordinary gradient descent on a differentiable loss. They do not cover momentum, adaptive optimisers or stochastic sampling. Mathematical correctness and comparison with these notes should be kept separate from whether an explanation uses identical wording. FEYNMAN PROJECT | GD-01 | Development benchmark v1.0 1"
+    },
+    {
+      "id": "P2C1",
+      "page": 2,
+      "text": "Step size and visual example 4. Learning rate The learning rate scales the size of the parameter update. For a fixed non-zero gradient, a larger learning rate produces a larger step. An excessively large learning rate can overshoot a useful region or cause the loss to increase. A very small learning rate can make progress slow. 5. Objective and limitations The aim of the updates is to reduce the loss over time. This is an objective, not a guarantee that every step reduces loss. Gradient descent does not generally guarantee finding a global minimum for every loss function. Figure 1. A single update on an illustrative loss curve Read the labelled positions and arrows in the figure. Explain how the update direction relates to the gradient direction, and compare the losses at the two labelled positions. FEYNMAN PROJECT | GD-01 | Development benchmark v1.0 2"
+    }
+  ],
+  "original_transcript": [
+    {
+      "id": "B0",
+      "role": "buddy",
+      "text": "Hey! What are you going to teach me about Gradient descent today? Start wherever feels natural."
+    },
+    {
+      "id": "S1",
+      "role": "student",
+      "text": "gradient descent is an optimization algorithm that helps machine learning models learn properly. it has a loss function which measures how badly the model parameters perform. the lower the value of the loss function the better the model learns."
+    },
+    {
+      "id": "B1",
+      "role": "buddy",
+      "text": "That's a solid start! You mentioned the goal is to find parameters with lower loss. Since the gradient points uphill, how does moving opposite to it actually help us go downhill?"
+    },
+    {
+      "id": "S2",
+      "role": "student",
+      "text": "im not very sure"
+    },
+    {
+      "id": "B2",
+      "role": "buddy",
+      "text": "Think of the gradient as a map showing which way gets steeper up. If you walk exactly opposite that arrow, you're guaranteed to go down, even if you don't know where the bottom is yet. Does that help visualize the direction?"
+    }
+  ],
+  "results": [
+    {
+      "probe": "opening_followup",
+      "output": "That's a solid start on the purpose and loss function. Since the gradient points uphill, how does subtracting it actually move us downhill?",
+      "trace": {
+        "model": "qwen3.5:4b",
+        "prompt_version": "conversation-v2",
+        "wall_seconds": 41.342,
+        "load_duration": 8159905300,
+        "prompt_eval_duration": 29947135000,
+        "eval_duration": 3161833000,
+        "prompt_eval_count": 1011,
+        "eval_count": 29,
+        "done_reason": "stop"
+      }
+    },
+    {
+      "probe": "uncertainty_hint",
+      "output": "Remember that the gradient tells you which way the loss increases; going the opposite way should decrease it. Try visualizing a ball rolling down a hill instead of climbing up. What do you think happens if you roll too fast?",
+      "trace": {
+        "model": "qwen3.5:4b",
+        "prompt_version": "conversation-v2",
+        "wall_seconds": 7.195,
+        "load_duration": 6408100,
+        "prompt_eval_duration": 1659683000,
+        "eval_duration": 5504402000,
+        "prompt_eval_count": 1061,
+        "eval_count": 46,
+        "done_reason": "stop"
+      }
+    },
+    {
+      "probe": "reflection_with_false_buddy_hint",
+      "output": {
+        "summary": "You contributed 2 student responses. The observations below refer to your contributions and linked notes; they do not verify the buddy's explanations.",
+        "explained": [
+          {
+            "observation": "You correctly identified that gradient descent is an optimization algorithm used to adjust model parameters by minimizing a loss function.",
+            "evidence": [
+              {
+                "id": "S1",
+                "text": "gradient descent is an optimization algorithm that helps machine learning models learn properly. it has a loss function which measures how badly the model parameters perform. the lower the value of the loss function the better the model learns."
+              }
+            ],
+            "sources": [
+              {
+                "id": "P1C1",
+                "page": 1,
+                "text": "Gradient descent Study notes | One topic, five subtopics and one figure 1. Purpose Gradient descent is an optimisation algorithm. It is used, for example, to adjust the parameters of a machine learning model. A loss function measures how poorly a chosen set of parameters performs on the learning task. The objective is to find parameters with a lower loss. 2. Gradient direction For a differentiable loss function, the gradient points in the direction of steepest local increase in loss, using the usual Euclidean notion of direction. It does not point towards the steepest decrease. In one dimension, the gradient is the derivative of the loss with respect to the parameter. 3. Parameter updates Gradient descent updates parameters in the direction opposite to the gradient. For one parameter w, the update is: w_new = w_old - learning_rate * gradient Here, the gradient is evaluated at the current parameter value and the learning rate is positive. Subtracting a positive gradient decreases w. Subtracting a negative gradient increases w. Scope These notes describe ordinary gradient descent on a differentiable loss. They do"
+              }
+            ]
+          },
+          {
+            "observation": "You accurately stated that the goal of gradient descent is to find parameters with lower loss values.",
+            "evidence": [
+              {
+                "id": "S1",
+                "text": "gradient descent is an optimization algorithm that helps machine learning models learn properly. it has a loss function which measures how badly the model parameters perform. the lower the value of the loss function the better the model learns."
+              }
+            ],
+            "sources": [
+              {
+                "id": "P1C1",
+                "page": 1,
+                "text": "Gradient descent Study notes | One topic, five subtopics and one figure 1. Purpose Gradient descent is an optimisation algorithm. It is used, for example, to adjust the parameters of a machine learning model. A loss function measures how poorly a chosen set of parameters performs on the learning task. The objective is to find parameters with a lower loss. 2. Gradient direction For a differentiable loss function, the gradient points in the direction of steepest local increase in loss, using the usual Euclidean notion of direction. It does not point towards the steepest decrease. In one dimension, the gradient is the derivative of the loss with respect to the parameter. 3. Parameter updates Gradient descent updates parameters in the direction opposite to the gradient. For one parameter w, the update is: w_new = w_old - learning_rate * gradient Here, the gradient is evaluated at the current parameter value and the learning rate is positive. Subtracting a positive gradient decreases w. Subtracting a negative gradient increases w. Scope These notes describe ordinary gradient descent on a differentiable loss. They do"
+              },
+              {
+                "id": "P2C1",
+                "page": 2,
+                "text": "Step size and visual example 4. Learning rate The learning rate scales the size of the parameter update. For a fixed non-zero gradient, a larger learning rate produces a larger step. An excessively large learning rate can overshoot a useful region or cause the loss to increase. A very small learning rate can make progress slow. 5. Objective and limitations The aim of the updates is to reduce the loss over time. This is an objective, not a guarantee that every step reduces loss. Gradient descent does not generally guarantee finding a global minimum for every loss function. Figure 1. A single update on an illustrative loss curve Read the labelled positions and arrows in the figure. Explain how the update direction relates to the gradient direction, and compare the losses at the two labelled positions. FEYNMAN PROJECT | GD-01 | Development benchmark v1.0 2"
+              }
+            ]
+          }
+        ],
+        "revisit": [
+          {
+            "observation": "You expressed uncertainty about how moving opposite to the gradient helps achieve a lower loss, despite the source noting that the gradient points in the direction of steepest increase.",
+            "evidence": [
+              {
+                "id": "S2",
+                "text": "im not very sure"
+              }
+            ],
+            "sources": [
+              {
+                "id": "P1C1",
+                "page": 1,
+                "text": "Gradient descent Study notes | One topic, five subtopics and one figure 1. Purpose Gradient descent is an optimisation algorithm. It is used, for example, to adjust the parameters of a machine learning model. A loss function measures how poorly a chosen set of parameters performs on the learning task. The objective is to find parameters with a lower loss. 2. Gradient direction For a differentiable loss function, the gradient points in the direction of steepest local increase in loss, using the usual Euclidean notion of direction. It does not point towards the steepest decrease. In one dimension, the gradient is the derivative of the loss with respect to the parameter. 3. Parameter updates Gradient descent updates parameters in the direction opposite to the gradient. For one parameter w, the update is: w_new = w_old - learning_rate * gradient Here, the gradient is evaluated at the current parameter value and the learning rate is positive. Subtracting a positive gradient decreases w. Subtracting a negative gradient increases w. Scope These notes describe ordinary gradient descent on a differentiable loss. They do"
+              },
+              {
+                "id": "P2C1",
+                "page": 2,
+                "text": "Step size and visual example 4. Learning rate The learning rate scales the size of the parameter update. For a fixed non-zero gradient, a larger learning rate produces a larger step. An excessively large learning rate can overshoot a useful region or cause the loss to increase. A very small learning rate can make progress slow. 5. Objective and limitations The aim of the updates is to reduce the loss over time. This is an objective, not a guarantee that every step reduces loss. Gradient descent does not generally guarantee finding a global minimum for every loss function. Figure 1. A single update on an illustrative loss curve Read the labelled positions and arrows in the figure. Explain how the update direction relates to the gradient direction, and compare the losses at the two labelled positions. FEYNMAN PROJECT | GD-01 | Development benchmark v1.0 2"
+              }
+            ]
+          }
+        ],
+        "limitations": "A provisional reflection on this conversation, not a grade or proof of mastery.",
+        "warning": "Model suggestions can be wrong. Check the quoted explanations and cited notes."
+      },
+      "trace": {
+        "model": "qwen3.5:4b",
+        "prompt_version": "reflection-v2",
+        "wall_seconds": 73.918,
+        "load_duration": 8242590100,
+        "prompt_eval_duration": 32732064000,
+        "eval_duration": 32921714999,
+        "prompt_eval_count": 1113,
+        "eval_count": 249,
+        "done_reason": "stop",
+        "raw_reflection": "{\n  \"explained\": [\n    {\n      \"observation\": \"You correctly identified that gradient descent is an optimization algorithm used to adjust model parameters by minimizing a loss function.\",\n      \"message_ids\": [\n        \"S1\"\n      ],\n      \"source_ids\": [\n        \"P1C1\"\n      ]\n    },\n    {\n      \"observation\": \"You accurately stated that the goal of gradient descent is to find parameters with lower loss values.\",\n      \"message_ids\": [\n        \"S1\"\n      ],\n      \"source_ids\": [\n        \"P1C1\",\n        \"P2C1\"\n      ]\n    }\n  ],\n  \"revisit\": [\n    {\n      \"observation\": \"You expressed uncertainty about how moving opposite to the gradient helps achieve a lower loss, despite the source noting that the gradient points in the direction of steepest increase.\",\n      \"message_ids\": [\n        \"S2\"\n      ],\n      \"source_ids\": [\n        \"P1C1\",\n        \"P2C1\"\n      ]\n    }\n  ]\n}"
+      }
+    }
+  ],
+  "limitations": "One run per probe, known development case, all three passages supplied. Not held-out accuracy or an end-to-end retrieval test."
+}

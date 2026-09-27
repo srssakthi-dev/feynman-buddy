@@ -1,0 +1,11 @@
+{
+  "kind": "synthetic-speech API integration check",
+  "expected": "A set is an unordered collection of distinct elements. The intersection contains elements shared by both sets.",
+  "fixture": "Windows System.Speech synthetic voice, 16 kHz mono PCM WAV",
+  "status_code": 422,
+  "response": {
+    "detail": "This recording is not a readable PCM WAV file."
+  },
+  "messages_after_transcription": 1,
+  "limitations": "One synthetic recording. No browser microphone, accent/noise study, ASR candidate comparison or playback-audibility verification."
+}

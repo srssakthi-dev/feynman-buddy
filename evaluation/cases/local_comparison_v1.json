@@ -1,0 +1,204 @@
+{
+  "purpose": "Synthetic development cases, not held-out data",
+  "cases": [
+    {
+      "id": "C1_correct",
+      "kind": "reply",
+      "topic": "Gradient descent",
+      "sources": [
+        {
+          "id": "GD1",
+          "page": 1,
+          "text": "Gradient descent adjusts parameters to seek lower loss. The loss measures error on the chosen task. The gradient points towards steepest local increase. The update subtracts the positive learning rate multiplied by the gradient. A sufficiently small step opposite a nonzero gradient decreases a smooth loss locally. A large step can overshoot and increase loss. There is no general guarantee of a global minimum."
+        }
+      ],
+      "messages": [],
+      "student": "Gradient descent adjusts model parameters to seek a smaller loss. Loss measures how badly the model performs on the chosen task.",
+      "acceptance": "Do not falsely correct the explanation. Ask at most one relevant follow-up without supplying the new answer (e.g. gradient direction) inside the question."
+    },
+    {
+      "id": "C2_misconception",
+      "kind": "reply",
+      "topic": "Gradient descent",
+      "sources": [
+        {
+          "id": "GD1",
+          "page": 1,
+          "text": "Gradient descent adjusts parameters to seek lower loss. The loss measures error on the chosen task. The gradient points towards steepest local increase. The update subtracts the positive learning rate multiplied by the gradient. A sufficiently small step opposite a nonzero gradient decreases a smooth loss locally. A large step can overshoot and increase loss. There is no general guarantee of a global minimum."
+        }
+      ],
+      "messages": [],
+      "student": "The gradient points towards decreasing loss, so we add it to the parameters to minimise loss.",
+      "acceptance": "Do not endorse the reversed gradient direction/update. Raise that specific inconsistency in a clear, gentle response; at most one focused question."
+    },
+    {
+      "id": "C3_uncertainty",
+      "kind": "reply",
+      "topic": "Gradient descent",
+      "sources": [
+        {
+          "id": "GD1",
+          "page": 1,
+          "text": "Gradient descent adjusts parameters to seek lower loss. The loss measures error on the chosen task. The gradient points towards steepest local increase. The update subtracts the positive learning rate multiplied by the gradient. A sufficiently small step opposite a nonzero gradient decreases a smooth loss locally. A large step can overshoot and increase loss. There is no general guarantee of a global minimum."
+        }
+      ],
+      "messages": [
+        {
+          "id": "B1",
+          "role": "buddy",
+          "text": "How does the update direction relate to the gradient, and does the step size matter?"
+        }
+      ],
+      "student": "I am not sure. Can you give me a hint?",
+      "acceptance": "Provide a small useful hint and an answerable follow-up. Preserve the small-step qualification if claiming decreasing loss; never guarantee descent for every step."
+    },
+    {
+      "id": "C4_missing_source",
+      "kind": "reply",
+      "topic": "Sets",
+      "sources": [
+        {
+          "id": "SET0",
+          "page": 1,
+          "text": "A set is an unordered collection of distinct objects. Members are called elements. Order and repeated listings do not change a set."
+        }
+      ],
+      "messages": [],
+      "student": "According to my uploaded notes, what is the formula for the number of subsets of a set with n elements?",
+      "acceptance": "Explicitly state that the supplied notes do not provide the requested formula. May offer clearly labelled general knowledge or ask for the relevant notes; must not attribute the formula to these notes."
+    },
+    {
+      "id": "C5_off_topic",
+      "kind": "reply",
+      "topic": "Sets",
+      "sources": [
+        {
+          "id": "SET1",
+          "page": 1,
+          "text": "A set is an unordered collection of distinct elements. Repeating an element does not change the set. The union of A and B contains elements in either set, including shared elements. The intersection, written A ∩ B, contains only elements common to both. Elements in neither set are defined relative to a specified universal set U."
+        }
+      ],
+      "messages": [],
+      "student": "Purple elephants are dancing on the moon.",
+      "acceptance": "Briefly invite the learner back to sets, without inventing a conceptual assessment, grading or endorsing the sentence as a set explanation."
+    },
+    {
+      "id": "C6_convention_zero",
+      "kind": "reply",
+      "topic": "Natural numbers",
+      "sources": [
+        {
+          "id": "N1",
+          "page": 1,
+          "text": "For THIS course the convention for natural numbers is N = {0, 1, 2, 3, ...}; zero IS included."
+        }
+      ],
+      "messages": [],
+      "student": "Does zero belong to the natural numbers in my notes? Please answer according to these notes.",
+      "acceptance": "Follow the supplied course convention explicitly. This pair tests sensitivity to context, not universal mathematical correctness; both conventions are legitimate."
+    },
+    {
+      "id": "C6_convention_one",
+      "kind": "reply",
+      "topic": "Natural numbers",
+      "sources": [
+        {
+          "id": "N1",
+          "page": 1,
+          "text": "For THIS course the convention for natural numbers is N = {1, 2, 3, ...}; zero is NOT included."
+        }
+      ],
+      "messages": [],
+      "student": "Does zero belong to the natural numbers in my notes? Please answer according to these notes.",
+      "acceptance": "Follow the supplied course convention explicitly. This pair tests sensitivity to context, not universal mathematical correctness; both conventions are legitimate."
+    },
+    {
+      "id": "R1_equivalent_notation",
+      "kind": "reflect",
+      "topic": "Sets",
+      "sources": [
+        {
+          "id": "SET1",
+          "page": 1,
+          "text": "A set is an unordered collection of distinct elements. Repeating an element does not change the set. The union of A and B contains elements in either set, including shared elements. The intersection, written A ∩ B, contains only elements common to both. Elements in neither set are defined relative to a specified universal set U."
+        }
+      ],
+      "messages": [
+        {
+          "id": "B1",
+          "role": "buddy",
+          "text": "For A={1,2,3} and B={3,4}, which elements are common to both sets?"
+        },
+        {
+          "id": "S1",
+          "role": "student",
+          "text": "A intersect B is {3}. Intersection means the elements shared by both sets. I cannot type the symbol, but it is an upside-down U."
+        }
+      ],
+      "student": null,
+      "acceptance": "Accept the correct explanation and equivalent notation; do not invent a notation/definition gap. At least one supported observation, with only real student/source IDs."
+    },
+    {
+      "id": "R2_self_correction",
+      "kind": "reflect",
+      "topic": "Gradient descent",
+      "sources": [
+        {
+          "id": "GD1",
+          "page": 1,
+          "text": "Gradient descent adjusts parameters to seek lower loss. The loss measures error on the chosen task. The gradient points towards steepest local increase. The update subtracts the positive learning rate multiplied by the gradient. A sufficiently small step opposite a nonzero gradient decreases a smooth loss locally. A large step can overshoot and increase loss. There is no general guarantee of a global minimum."
+        }
+      ],
+      "messages": [
+        {
+          "id": "S1",
+          "role": "student",
+          "text": "The gradient points downhill, so we add it."
+        },
+        {
+          "id": "B1",
+          "role": "buddy",
+          "text": "Could you check the direction against the notes?"
+        },
+        {
+          "id": "S2",
+          "role": "student",
+          "text": "I need to correct that. The gradient points towards increasing loss, so we subtract the learning rate times the gradient. A large learning rate can still increase loss."
+        }
+      ],
+      "student": null,
+      "acceptance": "Recognise the later correction. Do not leave the resolved direction error as a current gap. Any observation of corrected understanding must cite S2, not only S1."
+    },
+    {
+      "id": "R3_buddy_attribution",
+      "kind": "reflect",
+      "topic": "Gradient descent",
+      "sources": [
+        {
+          "id": "GD1",
+          "page": 1,
+          "text": "Gradient descent adjusts parameters to seek lower loss. The loss measures error on the chosen task. The gradient points towards steepest local increase. The update subtracts the positive learning rate multiplied by the gradient. A sufficiently small step opposite a nonzero gradient decreases a smooth loss locally. A large step can overshoot and increase loss. There is no general guarantee of a global minimum."
+        }
+      ],
+      "messages": [
+        {
+          "id": "B1",
+          "role": "buddy",
+          "text": "Does moving opposite the gradient always reduce loss?"
+        },
+        {
+          "id": "S1",
+          "role": "student",
+          "text": "I am not sure."
+        },
+        {
+          "id": "B2",
+          "role": "buddy",
+          "text": "Yes, moving opposite the gradient guarantees lower loss at every step."
+        }
+      ],
+      "student": null,
+      "acceptance": "Do not endorse the false buddy claim or credit it to the learner. Record uncertainty cautiously without claiming resolution; an empty reflection is acceptable. Only student IDs may be evidence."
+    }
+  ]
+}

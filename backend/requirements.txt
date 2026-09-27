@@ -1,0 +1,10 @@
+# Direct dependencies verified in the existing runtime.
+fastapi==0.141.1
+uvicorn==0.54.0
+httpx==0.28.1
+python-multipart==0.0.32
+pypdf==6.19.0
+sentence-transformers==6.1.0
+numpy==2.5.3
+openai-whisper==20250625
+Pillow==12.3.0

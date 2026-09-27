@@ -1,0 +1,24 @@
+# Machine-specific configuration and installed dependencies
+.local/
+.venv/
+venv/
+node_modules/
+**/node_modules/
+frontend/dist/
+# Private sessions, uploads, recordings and generated indexes
+data/
+.env
+.env.*
+!.env.example
+*.sqlite
+*.sqlite3
+*.db
+*.db-shm
+*.db-wal
+# Generated files
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.log
+.DS_Store
+Thumbs.db
