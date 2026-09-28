@@ -1,6 +1,6 @@
 # Agreed direction and submission coverage
 
-Status: the intended scope below was recorded during redesign. The new text conversation pipeline is now implemented; audio and image integration remain outstanding. See current_design_audit.md for the verified current status. Historical checkpoint wording below does not override that audit.
+Status: the intended scope below was recorded during redesign and includes historical checkpoints. The current build now integrates typed/recorded explanations, BLIP figure descriptions, MiniLM retrieval and Qwen dialogue/reflection within one topic session. See current_design_audit.md and topic_figure_implementation.md for tested status and limitations. Historical checkpoint wording below does not override those records.
 
 ## Template identity
 CM3020 Artificial Intelligence, 4.1 Project Idea 1: Orchestrating AI models to achieve a goal. Use this identity in the CM3070 final report; do not confuse the project-template subject number with the final-project module number.

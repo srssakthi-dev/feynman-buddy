@@ -1,0 +1,47 @@
+{
+  "id": "retrieval_fresh_v1",
+  "status": "Fixed synthetic evaluation cases; authored before the first model run on 2026-09-28",
+  "scope": "Passage retrieval only, not PDF extraction or generated-answer grounding",
+  "documents": [
+    {
+      "topic": "Database systems",
+      "chunks": [
+        {"id": "DB1", "page": 1, "text": "Atomicity means a transaction's operations take effect together or not at all. If an operation fails, the database rolls back the transaction's partial changes."},
+        {"id": "DB2", "page": 1, "text": "Isolation controls how concurrent transactions observe each other's changes. Different isolation levels permit or prevent phenomena such as dirty reads, non-repeatable reads and phantoms."},
+        {"id": "DB3", "page": 2, "text": "Write-ahead logging records a change in a durable log before the corresponding database page is written. During recovery, the log can be used to redo committed work or undo incomplete work."},
+        {"id": "DB4", "page": 2, "text": "A B-tree index stores sorted keys in balanced pages. Searching the index can avoid scanning every row, although maintaining the index adds work to inserts and updates."},
+        {"id": "DB5", "page": 3, "text": "Multi-version concurrency control keeps multiple versions of rows so readers can see a consistent snapshot while writers continue. Old versions must eventually be reclaimed."},
+        {"id": "DB6", "page": 3, "text": "A deadlock occurs when transactions wait for one another in a cycle. A database may detect the cycle and abort one transaction so the others can continue."},
+        {"id": "DB7", "page": 4, "text": "A foreign key links a referencing table to a key in another table. Referential integrity checks prevent a child row from referring to a missing parent row."},
+        {"id": "DB8", "page": 4, "text": "A backup is a recoverable copy of database state. A consistent backup must account for changes made while it is taken, often using a snapshot or coordinated log position."}
+      ],
+      "cases": [
+        {"id": "DBQ1", "previous_buddy": "What happens if one operation in a transaction fails?", "student": "Would the changes made earlier in that transaction still remain?", "expected_ids": ["DB1"]},
+        {"id": "DBQ2", "previous_buddy": "Can one transaction see another transaction's unfinished writes?", "student": "Does that depend on the isolation level?", "expected_ids": ["DB2"]},
+        {"id": "DBQ3", "previous_buddy": "Why must a log record be saved before the data page?", "student": "I am not sure how recovery uses it.", "expected_ids": ["DB3"]},
+        {"id": "DBQ4", "previous_buddy": "Why can a key lookup be faster with an index?", "student": "Does it avoid reading every row?", "expected_ids": ["DB4"]},
+        {"id": "DBQ5", "previous_buddy": "How can readers keep a stable view while writers change rows?", "student": "Are older row versions involved?", "expected_ids": ["DB5"]}
+      ]
+    },
+    {
+      "topic": "Computer networks",
+      "chunks": [
+        {"id": "NW1", "page": 1, "text": "A DNS resolver may cache a domain-name answer for the record's time to live, or TTL. After the TTL expires, the resolver must obtain a fresh answer instead of assuming the old address is still current."},
+        {"id": "NW2", "page": 1, "text": "A TCP connection normally begins with a three-way handshake: SYN, SYN-ACK and ACK. This exchanges initial sequence information before application data is sent."},
+        {"id": "NW3", "page": 2, "text": "TCP congestion control uses a congestion window to limit how much unacknowledged data a sender may have in flight. The window can shrink after congestion is detected."},
+        {"id": "NW4", "page": 2, "text": "An HTTP ETag identifies a version of a resource. A client can send If-None-Match with the ETag, allowing the server to return a 304 response when the representation has not changed."},
+        {"id": "NW5", "page": 3, "text": "A TLS certificate binds a public key to a named server identity through a signature chain. The client checks the name, validity period and trust chain before accepting it."},
+        {"id": "NW6", "page": 3, "text": "Network address translation may map a private address and port to a public address and port. The router keeps a mapping so reply packets can reach the correct internal device."},
+        {"id": "NW7", "page": 4, "text": "DHCP assigns network configuration such as an IP address, subnet mask, gateway and DNS resolver to a host. A lease limits how long an assignment remains valid."},
+        {"id": "NW8", "page": 4, "text": "The path maximum transmission unit is the largest packet size that can traverse a route without fragmentation. Sending packets larger than the path supports can cause fragmentation or delivery problems."}
+      ],
+      "cases": [
+        {"id": "NWQ1", "previous_buddy": "Why might a cached domain address need refreshing?", "student": "Would the resolver keep using it forever?", "expected_ids": ["NW1"]},
+        {"id": "NWQ2", "previous_buddy": "Which messages establish a TCP connection?", "student": "I know there are three but cannot remember their order.", "expected_ids": ["NW2"]},
+        {"id": "NWQ3", "previous_buddy": "What limits unacknowledged data when the network is congested?", "student": "Does the sender reduce the amount in flight?", "expected_ids": ["NW3"]},
+        {"id": "NWQ4", "previous_buddy": "How does a browser ask whether a cached web resource changed?", "student": "Can it send a version tag instead of fetching everything?", "expected_ids": ["NW4"]},
+        {"id": "NWQ5", "previous_buddy": "How does the client check that a TLS certificate belongs to the site?", "student": "Does it check the name and who signed it?", "expected_ids": ["NW5"]}
+      ]
+    }
+  ]
+}

@@ -12,7 +12,7 @@ from urllib.request import Request, urlopen
 os.environ.setdefault("HF_HUB_OFFLINE", "1")
 os.environ.setdefault("TRANSFORMERS_OFFLINE", "1")
 MODEL = os.environ.get("STUDY_MODEL", "qwen3.5:4b")
-PROMPT_VERSION = "conversation-v2"
+PROMPT_VERSION = "conversation-v3"
 REFLECTION_VERSION = "reflection-v2"
 PROMPTS = Path(__file__).resolve().parents[3] / "prompts"
 LOCK = threading.RLock()
@@ -52,7 +52,7 @@ def generate(messages, model, max_tokens=160, structured=False):
     started = time.perf_counter()
     with LOCK:
         with urlopen(Request("http://127.0.0.1:11434/api/chat", data=json.dumps(payload).encode(),
-                             headers={"Content-Type": "application/json"}), timeout=180) as response:
+                             headers={"Content-Type": "application/json"}), timeout=240) as response:
             result = json.load(response)
     text = result.get("message", {}).get("content", "").strip()
     if not text:
@@ -64,12 +64,18 @@ def generate(messages, model, max_tokens=160, structured=False):
     return text, trace
 
 
-def reply(topic, messages, student, sources, model):
+def reply(topic, messages, student, sources, model, available_figures=None):
     system = (PROMPTS / f"{PROMPT_VERSION}.txt").read_text(encoding="utf-8")
     diagram = any(source.get('kind') == 'reviewed_diagram_description' for source in sources)
+    figure = any(source.get('kind') == 'reviewed_figure_description' for source in sources)
     if diagram:
         system += '\n' + (PROMPTS / 'diagram-conversation-v1.txt').read_text(encoding='utf-8')
-    context = json.dumps({"session_topic": topic, "retrieved_notes": sources}, ensure_ascii=False)
+    elif figure:
+        system += '\n' + (PROMPTS / 'figure-selected-v3.txt').read_text(encoding='utf-8')
+    elif available_figures:
+        system += '\n' + (PROMPTS / 'figure-available-v3.txt').read_text(encoding='utf-8')
+    context = json.dumps({"session_topic": topic, "retrieved_notes": sources,
+                          "available_figures": available_figures or []}, ensure_ascii=False)
     # Previous messages supply context, not a checklist of points that must be repeated.
     history = [{"role": "assistant" if item["role"] == "buddy" else "user", "content": item["text"]}
                for item in messages[-6:]]
@@ -79,14 +85,21 @@ def reply(topic, messages, student, sources, model):
     if diagram:
         trace['prompt_version'] = 'diagram-conversation-v1'
         trace['base_prompt_version'] = PROMPT_VERSION
+    elif figure:
+        trace['figure_prompt_version'] = 'figure-selected-v3'
+    elif available_figures:
+        trace['figure_prompt_version'] = 'figure-available-v3'
     return answer, trace
 
 
 def reflect(topic, messages, sources, model):
     system = (PROMPTS / f"{REFLECTION_VERSION}.txt").read_text(encoding="utf-8")
     diagram = any(source.get('kind') == 'reviewed_diagram_description' for source in sources)
+    figure = any(source.get('kind') == 'reviewed_figure_description' for source in sources)
     if diagram:
         system += '\n' + (PROMPTS / 'diagram-reflection-v1.txt').read_text(encoding='utf-8')
+    elif figure:
+        system += '\n' + (PROMPTS / 'figure-reflection-v2.txt').read_text(encoding='utf-8')
     raw, trace = generate([{"role": "system", "content": system}, {"role": "user", "content": json.dumps(
         {"topic": topic, "transcript": messages, "sources": sources}, ensure_ascii=False)}],
         model, max_tokens=1000, structured=True)
@@ -123,4 +136,6 @@ def reflect(topic, messages, sources, model):
     trace["prompt_version"] = REFLECTION_VERSION
     if diagram:
         trace['diagram_prompt_version'] = 'diagram-reflection-v1'
+    if figure:
+        trace['figure_prompt_version'] = 'figure-reflection-v2'
     return cleaned, trace

@@ -1,4 +1,4 @@
-# Planned dependencies for subsequent ingestion/inference milestones.
+# Model dependencies tested with the current multimodal workflow on Windows CPU.
 -r requirements.txt
 python-multipart==0.0.32
 pypdf==6.19.0

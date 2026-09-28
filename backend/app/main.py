@@ -16,12 +16,12 @@ def create_app(database_path: Path = DATABASE_PATH) -> FastAPI:
         store.initialise()
         yield
 
-    app = FastAPI(title="Feynman Buddy", version="0.4.0", lifespan=lifespan)
+    app = FastAPI(title="Explaino", version="0.5.0", lifespan=lifespan)
     app.include_router(create_study_router(store))
 
     @app.get("/api/health")
     def health():
-        return {"status": "ok", "version": "0.4.0", "checkpoint": "separate-diagram-practice"}
+        return {"status": "ok", "version": "0.5.0", "checkpoint": "topic-figure-conversation"}
 
     @app.get("/api/sessions", response_model=list[StudySession])
     def list_sessions():

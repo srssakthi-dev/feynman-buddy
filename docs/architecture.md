@@ -1,5 +1,11 @@
 # Architecture by responsibility
 
+## Current figure path: checkpoint 0.5
+
+Optional figures now belong to the original topic session. A student selects a cropped PNG/JPEG and its PDF page; local BLIP suggests a caption once. Original caption and reviewed description are stored separately. During an ordinary turn, MiniLM retrieves note passages; reviewed figures are available as optional session metadata. The student can select a figure explicitly at any time; an explicit request to explain a figure selects it automatically when exactly one reviewed figure exists. The selected figure and note passages then enter the same conversation as labelled sources. The student sees the image; Qwen sees its reviewed description and notes, not pixels. Selecting or leaving a figure changes context without adding a fabricated buddy message; the interface displays the invitation. Final reflection uses figures actually discussed along with relevant notes and student messages. Old separate diagram sessions remain readable for backward compatibility; new topic sessions use the integrated path.
+
+The figure-description model is BLIP, chosen provisionally for practical CPU response time. The one-image BLIP/Granite comparison supports neither caption as reliable visual ground truth. Source links and model review do not verify accuracy. See topic_figure_implementation.md for current evidence and limitations. Sections below preserve historical checkpoints.
+
 ## Implemented: checkpoint 0.1
 Browser -> React interface -> local /api proxy -> FastAPI validation -> SQLite session store. Each session has a UUID, student-provided name and UTC creation/update timestamps. A URL query parameter selects the current session. Data survives page reload and application restart. No models are invoked yet.
 
@@ -13,7 +19,7 @@ The final reflection receives the full short transcript (maximum eight student m
 Messages and retry identifiers commit together after successful generation. A retry cannot duplicate a turn; model failure leaves the dialogue unchanged. SQLite schema version 2 adds documents, practice runs, messages and turn traces without deleting existing sessions. Source PDF and embeddings persist with the session. Runtime content stays in ignored data directories.
 
 ## Prompt and reflection revision
-The active prompts are now conversation-v2 and reflection-v2 (D009). Reflection introductions are application-generated factual descriptions, not LLM verdicts. Legacy reflection introductions are suppressed with a version notice; original saved outputs remain exportable. Each new reflection trace records its own reflection prompt version, separately from the conversation version. A practice run's version records its starting configuration; per-turn traces identify the prompt actually used if an unfinished session spans an update.
+The active general prompts are now conversation-v3 and reflection-v2. Selected and available figures have separate v3 instructions following the live gradient-descent failure (see `live_gradient_session_review.md`); conversation-v2 and earlier figure prompts remain as historical test configurations. Reflection introductions are application-generated factual descriptions, not LLM verdicts. Legacy reflection introductions are suppressed with a version notice; original saved outputs remain exportable. Each new reflection trace records its own reflection prompt version, separately from the conversation version. A practice run's version records its starting configuration; per-turn traces identify the prompt actually used if an unfinished session spans an update.
 
 ## Remaining components after the grounding correction
 Current coverage is audited in current_design_audit.md. Source passages saved for each generation are now exposed through reply_sources in the study API and a collapsible UI disclosure. Explicit message IDs identify new traces; checked atomic turn order supports legacy traces. No extra generation is needed. Evidence excerpts are also shown in reflection details, without implying that the observation is verified.

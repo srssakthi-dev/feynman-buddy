@@ -3,6 +3,7 @@ import { request } from './api'
 import SpeechInput from './SpeechInput'
 import BuddyPlayback from './BuddyPlayback'
 import DiagramPractice from './DiagramPractice'
+import TopicFigures from './TopicFigures'
 
 export default function StudySession({ session }) {
   const [study, setStudy] = useState(null)
@@ -16,6 +17,7 @@ export default function StudySession({ session }) {
   const latest = useRef(null)
   const base = `/sessions/${session.id}`
   const turns = study?.messages.filter(message => message.role === 'student').length || 0
+  const activeFigure = study?.figures?.find(figure => figure.id === study.active_figure_id)
 
   async function load() {
     setBusy('Loading your session…')
@@ -68,7 +70,7 @@ export default function StudySession({ session }) {
       const data = await request(`${base}/export`)
       const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }))
       const link = document.createElement('a')
-      link.href = url; link.download = 'feynman-practice.json'; link.click()
+      link.href = url; link.download = 'explaino-practice.json'; link.click()
       setTimeout(() => URL.revokeObjectURL(url), 1000)
     } catch (failure) { setError(failure.message) }
   }
@@ -83,7 +85,7 @@ export default function StudySession({ session }) {
           <p>Upload a PDF about {session.name}. No special headings or template needed.</p>
           <label htmlFor="notes-file">Choose your PDF</label>
           <input id="notes-file" type="file" accept=".pdf,application/pdf" onChange={event => { setFile(event.target.files[0] || null); setError('') }} disabled={!!busy} />
-          <p className="file-guidance">Selectable-text PDF · up to 20 pages · 10 MB. After uploading, you can also practise a diagram separately using a cropped image.</p>
+          <p className="file-guidance">Selectable-text PDF · up to 20 pages · 10 MB. After uploading, you can add selected figures to this conversation.</p>
           <button className="primary compact" disabled={!file || !!busy}>Upload and prepare notes</button>
         </form> : <>
           <p className="document-name">{study.document.filename} <span>· {study.document.page_count} pages</span></p>
@@ -96,13 +98,24 @@ export default function StudySession({ session }) {
         </>}
       </section>
 
-      {study.document && <DiagramPractice base={base} study={study} busy={!!busy || audioActive} setStudy={setStudy} />}
+      {study.document && !study.diagram && <TopicFigures base={base} study={study} busy={!!busy || audioActive} setBusy={setBusy} setStudy={setStudy} />}
+      {study.document && study.diagram && <DiagramPractice base={base} study={study} busy={!!busy || audioActive} setStudy={setStudy} />}
       {study.document && <section className="conversation-card" aria-labelledby="conversation-title">
         <div className="notes-heading"><div><p className="eyebrow">LEARN BY TEACHING</p><h2 id="conversation-title">Teach your buddy</h2></div>{study.started && <span className="turn-count">{turns} / 8 responses</span>}</div>
         {!study.started ? <>
           <p className="conversation-intro">{study.diagram ? 'Explain this diagram in your own words. Your buddy receives the saved description and relevant notes to follow along.' : 'Explain the idea as if your buddy is learning it for the first time. It will use your notes to follow along and ask questions.'}</p>
-          <button className="primary compact" disabled={!!busy || !!(study.diagram && !study.diagram.approved_caption)} onClick={() => action('/start', 'Opening your practice…')}>{study.diagram ? 'Start diagram practice' : 'Start Feynman practice'}</button>
+          <button className="primary compact" disabled={!!busy || !!(study.diagram && !study.diagram.approved_caption)} onClick={() => action('/start', 'Opening your practice…')}>{study.diagram ? 'Start diagram practice' : 'Start explaining'}</button>
         </> : <>
+          {activeFigure && <aside className="active-figure-context" aria-label="Figure currently being discussed">
+            <a href={`/api${base}/figures/${activeFigure.id}/image.png`} target="_blank" rel="noreferrer">
+              <img src={`/api${base}/figures/${activeFigure.id}/image.png`} alt={`Figure from page ${activeFigure.page}`} />
+            </a>
+            <div><strong>Discussing the figure on page {activeFigure.page}</strong>
+              <p>What do you notice in this figure, and how does it connect to what you just explained? Your buddy uses its reviewed description and relevant notes; it cannot check visual details on its own.</p>
+              <button className="text-button" disabled={!!busy || audioActive}
+                onClick={() => action('/figures/return-to-topic', 'Returning to your topic…')}>Return to the topic</button>
+            </div>
+          </aside>}
           <div className="conversation-log" aria-live="polite">
             {study.messages.map(message => <article key={message.id} className={`message ${message.role}`}>
               <strong>{message.role === 'buddy' ? 'Your buddy' : 'You'}</strong><p>{message.text}</p>
@@ -112,7 +125,9 @@ export default function StudySession({ session }) {
                 {study.reply_sources[message.id].length === 0 ? <p>No source passages were recorded for this reply.</p>
                   : study.reply_sources[message.id].map(source => <div className="reply-source" key={source.id}>
                     <a className="source-link" href={`/api${base}/notes.pdf#page=${source.page}`} target="_blank" rel="noreferrer">Page {source.page} ↗</a>
+                    {source.kind === 'reviewed_figure_description' && <a className="source-link" href={`/api${base}/figures/${source.id.slice(7)}/image.png`} target="_blank" rel="noreferrer">View the figure ↗</a>}
                     {source.kind === 'reviewed_diagram_description' && <small>Reviewed AI diagram description · not independently verified</small>}
+                    {source.kind === 'reviewed_figure_description' && <small>Reviewed BLIP description · not independently verified</small>}
                     <blockquote>{source.text}</blockquote>
                   </div>)}
               </details>}
@@ -137,6 +152,7 @@ export default function StudySession({ session }) {
       {study.reflection && <section className="reflection-card" aria-labelledby="reflection-title">
         <p className="eyebrow">REFLECT & REVISIT</p><h2 id="reflection-title">Your practice reflection</h2>
         {study.diagram && <p className="source-context-note">This reflection uses your reviewed AI description and notes. The conversation model has not independently checked the image.</p>}
+        {!study.diagram && study.figures?.length > 0 && <p className="source-context-note">Figure observations rely on your explanations, reviewed BLIP descriptions and notes. The buddy has not independently checked the image.</p>}
         <p className="reflection-summary">{study.reflection.trace?.prompt_version === 'reflection-v2'
           ? study.reflection.summary
           : 'This reflection was generated with an earlier prompt. Its observations may be unreliable; start a new practice to use the revised reflection. The original result remains in your downloaded evidence.'}</p>

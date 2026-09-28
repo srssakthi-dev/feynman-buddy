@@ -64,7 +64,17 @@ class SessionStore:
                 page INTEGER NOT NULL, image BLOB NOT NULL, original_caption TEXT NOT NULL,
                 approved_caption TEXT, trace TEXT NOT NULL, UNIQUE(parent_id, request_id)
             )""")
-            connection.execute("PRAGMA user_version=4")
+            connection.execute("""CREATE TABLE IF NOT EXISTS topic_figures (
+                id TEXT PRIMARY KEY, session_id TEXT NOT NULL REFERENCES study_sessions(id),
+                request_id TEXT NOT NULL, page INTEGER NOT NULL, image BLOB NOT NULL,
+                original_caption TEXT NOT NULL, reviewed_caption TEXT,
+                printed_caption TEXT NOT NULL, trace TEXT NOT NULL,
+                UNIQUE(session_id, request_id)
+            )""")
+            columns = {row['name'] for row in connection.execute('PRAGMA table_info(practice_runs)')}
+            if 'active_figure_id' not in columns:
+                connection.execute('ALTER TABLE practice_runs ADD COLUMN active_figure_id TEXT')
+            connection.execute("PRAGMA user_version=5")
 
     def create(self, name: str) -> dict:
         now = datetime.now(timezone.utc).isoformat()
@@ -210,3 +220,60 @@ class SessionStore:
     def approve_diagram(self, session_id, caption):
         with self.connection() as connection:
             connection.execute('UPDATE diagrams SET approved_caption=? WHERE session_id=?', (caption, session_id))
+
+    def figures(self, session_id):
+        with self.connection() as connection:
+            rows = connection.execute('''SELECT id,session_id,page,original_caption,
+                reviewed_caption,printed_caption,trace FROM topic_figures
+                WHERE session_id=? ORDER BY rowid''', (session_id,)).fetchall()
+        result = [dict(row) for row in rows]
+        for item in result:
+            item['trace'] = json.loads(item['trace'])
+            item['edited'] = (item['reviewed_caption'] is not None and
+                              item['reviewed_caption'] != item['original_caption'])
+        return result
+
+    def figure(self, session_id, figure_id, include_image=False):
+        columns = '*' if include_image else 'id,session_id,page,original_caption,reviewed_caption,printed_caption,trace'
+        with self.connection() as connection:
+            row = connection.execute(f'SELECT {columns} FROM topic_figures WHERE session_id=? AND id=?',
+                                     (session_id, figure_id)).fetchone()
+        if not row:
+            return None
+        result = dict(row)
+        result['trace'] = json.loads(result['trace'])
+        return result
+
+    def figure_request(self, session_id, request_id):
+        with self.connection() as connection:
+            row = connection.execute('SELECT id FROM topic_figures WHERE session_id=? AND request_id=?',
+                                     (session_id, request_id)).fetchone()
+        return row['id'] if row else None
+
+    def save_figure(self, session_id, request_id, page, image, caption, printed_caption, trace):
+        figure_id = str(uuid.uuid4())
+        with self.connection() as connection:
+            connection.execute('''INSERT INTO topic_figures
+                (id,session_id,request_id,page,image,original_caption,printed_caption,trace)
+                VALUES (?,?,?,?,?,?,?,?)''',
+                (figure_id, session_id, request_id, page, image, caption, printed_caption, json.dumps(trace)))
+        return figure_id
+
+    def review_figure(self, session_id, figure_id, caption):
+        with self.connection() as connection:
+            connection.execute('''UPDATE topic_figures SET reviewed_caption=?
+                WHERE session_id=? AND id=?''', (caption, session_id, figure_id))
+
+    def select_figure(self, session_id, figure_id):
+        """Change conversation context without fabricating a buddy reply."""
+        with self.connection() as connection:
+            connection.execute('UPDATE practice_runs SET active_figure_id=? WHERE session_id=?',
+                               (figure_id, session_id))
+
+
+def figure_source(figure):
+    return {'id': 'FIGURE-' + figure['id'], 'page': figure['page'],
+            'kind': 'reviewed_figure_description', 'text': figure['reviewed_caption'],
+            'printed_caption': figure['printed_caption'], 'similarity': None,
+            'selection': 'Selected figure context; not similarity-ranked.',
+            'provenance': 'BLIP description reviewed by the student; image not independently verified by buddy.'}

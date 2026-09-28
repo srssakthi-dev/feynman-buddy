@@ -1,0 +1,297 @@
+{
+  "fixture_id": "retrieval_fresh_v1",
+  "fixture_status": "Fixed synthetic evaluation cases; authored before the first model run on 2026-09-28",
+  "scope": "Passage retrieval only, not PDF extraction or generated-answer grounding",
+  "run_utc": "2026-09-28T12:10:12.256504+00:00",
+  "python": "3.12.4",
+  "model": "sentence-transformers/all-MiniLM-L6-v2",
+  "method": "App inference.embed plus inference.retrieve; full passage ranking per query",
+  "summary": {
+    "questions": 10,
+    "hit_at_1": 10,
+    "hit_at_3": 10,
+    "mean_reciprocal_rank": 1.0
+  },
+  "results": [
+    {
+      "case_id": "DBQ1",
+      "topic": "Database systems",
+      "expected_ids": [
+        "DB1"
+      ],
+      "query": "Database systems\nWhat happens if one operation in a transaction fails?\nWould the changes made earlier in that transaction still remain?",
+      "top_three": [
+        {
+          "id": "DB1",
+          "page": 1,
+          "similarity": 0.593758
+        },
+        {
+          "id": "DB3",
+          "page": 2,
+          "similarity": 0.507628
+        },
+        {
+          "id": "DB6",
+          "page": 3,
+          "similarity": 0.460738
+        }
+      ],
+      "target_rank": 1,
+      "hit_at_1": true,
+      "hit_at_3": true
+    },
+    {
+      "case_id": "DBQ2",
+      "topic": "Database systems",
+      "expected_ids": [
+        "DB2"
+      ],
+      "query": "Database systems\nCan one transaction see another transaction's unfinished writes?\nDoes that depend on the isolation level?",
+      "top_three": [
+        {
+          "id": "DB2",
+          "page": 1,
+          "similarity": 0.590716
+        },
+        {
+          "id": "DB1",
+          "page": 1,
+          "similarity": 0.496364
+        },
+        {
+          "id": "DB3",
+          "page": 2,
+          "similarity": 0.429568
+        }
+      ],
+      "target_rank": 1,
+      "hit_at_1": true,
+      "hit_at_3": true
+    },
+    {
+      "case_id": "DBQ3",
+      "topic": "Database systems",
+      "expected_ids": [
+        "DB3"
+      ],
+      "query": "Database systems\nWhy must a log record be saved before the data page?\nI am not sure how recovery uses it.",
+      "top_three": [
+        {
+          "id": "DB3",
+          "page": 2,
+          "similarity": 0.706869
+        },
+        {
+          "id": "DB8",
+          "page": 4,
+          "similarity": 0.508729
+        },
+        {
+          "id": "DB5",
+          "page": 3,
+          "similarity": 0.347092
+        }
+      ],
+      "target_rank": 1,
+      "hit_at_1": true,
+      "hit_at_3": true
+    },
+    {
+      "case_id": "DBQ4",
+      "topic": "Database systems",
+      "expected_ids": [
+        "DB4"
+      ],
+      "query": "Database systems\nWhy can a key lookup be faster with an index?\nDoes it avoid reading every row?",
+      "top_three": [
+        {
+          "id": "DB4",
+          "page": 2,
+          "similarity": 0.598524
+        },
+        {
+          "id": "DB7",
+          "page": 4,
+          "similarity": 0.305848
+        },
+        {
+          "id": "DB5",
+          "page": 3,
+          "similarity": 0.22763
+        }
+      ],
+      "target_rank": 1,
+      "hit_at_1": true,
+      "hit_at_3": true
+    },
+    {
+      "case_id": "DBQ5",
+      "topic": "Database systems",
+      "expected_ids": [
+        "DB5"
+      ],
+      "query": "Database systems\nHow can readers keep a stable view while writers change rows?\nAre older row versions involved?",
+      "top_three": [
+        {
+          "id": "DB5",
+          "page": 3,
+          "similarity": 0.683116
+        },
+        {
+          "id": "DB3",
+          "page": 2,
+          "similarity": 0.447399
+        },
+        {
+          "id": "DB2",
+          "page": 1,
+          "similarity": 0.35539
+        }
+      ],
+      "target_rank": 1,
+      "hit_at_1": true,
+      "hit_at_3": true
+    },
+    {
+      "case_id": "NWQ1",
+      "topic": "Computer networks",
+      "expected_ids": [
+        "NW1"
+      ],
+      "query": "Computer networks\nWhy might a cached domain address need refreshing?\nWould the resolver keep using it forever?",
+      "top_three": [
+        {
+          "id": "NW1",
+          "page": 1,
+          "similarity": 0.76023
+        },
+        {
+          "id": "NW7",
+          "page": 4,
+          "similarity": 0.347144
+        },
+        {
+          "id": "NW6",
+          "page": 3,
+          "similarity": 0.346333
+        }
+      ],
+      "target_rank": 1,
+      "hit_at_1": true,
+      "hit_at_3": true
+    },
+    {
+      "case_id": "NWQ2",
+      "topic": "Computer networks",
+      "expected_ids": [
+        "NW2"
+      ],
+      "query": "Computer networks\nWhich messages establish a TCP connection?\nI know there are three but cannot remember their order.",
+      "top_three": [
+        {
+          "id": "NW2",
+          "page": 1,
+          "similarity": 0.573254
+        },
+        {
+          "id": "NW3",
+          "page": 2,
+          "similarity": 0.412835
+        },
+        {
+          "id": "NW8",
+          "page": 4,
+          "similarity": 0.293853
+        }
+      ],
+      "target_rank": 1,
+      "hit_at_1": true,
+      "hit_at_3": true
+    },
+    {
+      "case_id": "NWQ3",
+      "topic": "Computer networks",
+      "expected_ids": [
+        "NW3"
+      ],
+      "query": "Computer networks\nWhat limits unacknowledged data when the network is congested?\nDoes the sender reduce the amount in flight?",
+      "top_three": [
+        {
+          "id": "NW3",
+          "page": 2,
+          "similarity": 0.470692
+        },
+        {
+          "id": "NW8",
+          "page": 4,
+          "similarity": 0.373648
+        },
+        {
+          "id": "NW6",
+          "page": 3,
+          "similarity": 0.307965
+        }
+      ],
+      "target_rank": 1,
+      "hit_at_1": true,
+      "hit_at_3": true
+    },
+    {
+      "case_id": "NWQ4",
+      "topic": "Computer networks",
+      "expected_ids": [
+        "NW4"
+      ],
+      "query": "Computer networks\nHow does a browser ask whether a cached web resource changed?\nCan it send a version tag instead of fetching everything?",
+      "top_three": [
+        {
+          "id": "NW4",
+          "page": 2,
+          "similarity": 0.511671
+        },
+        {
+          "id": "NW1",
+          "page": 1,
+          "similarity": 0.372334
+        },
+        {
+          "id": "NW6",
+          "page": 3,
+          "similarity": 0.238766
+        }
+      ],
+      "target_rank": 1,
+      "hit_at_1": true,
+      "hit_at_3": true
+    },
+    {
+      "case_id": "NWQ5",
+      "topic": "Computer networks",
+      "expected_ids": [
+        "NW5"
+      ],
+      "query": "Computer networks\nHow does the client check that a TLS certificate belongs to the site?\nDoes it check the name and who signed it?",
+      "top_three": [
+        {
+          "id": "NW5",
+          "page": 3,
+          "similarity": 0.701526
+        },
+        {
+          "id": "NW1",
+          "page": 1,
+          "similarity": 0.275755
+        },
+        {
+          "id": "NW6",
+          "page": 3,
+          "similarity": 0.22893
+        }
+      ],
+      "target_rank": 1,
+      "hit_at_1": true,
+      "hit_at_3": true
+    }
+  ]
+}

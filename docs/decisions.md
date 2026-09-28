@@ -1,5 +1,8 @@
 # Decisions
 
+## D016: optional figures in the original topic conversation
+After comparing BLIP and Granite on the same diagram, keep BLIP as a provisional fast image-description stage and use it in the main topic session. One figure description is reviewed before use. When the figure's page is among retrieved notes, Qwen may offer it; the learner can explicitly select it as well. Selection displays a neutral invitation without adding a fabricated buddy message. Ordinary text/speech replies, provenance and one reflection remain in the same session. Preserve old Granite child sessions for compatibility. The first real full walkthrough completed but exposed slow Qwen turns and a false reflection inference, so this is an implemented integration, not validated teaching quality. See topic_figure_implementation.md and raw development results.
+
 ## D015: matched BLIP development comparison
 At the student's request, run the historical BLIP configuration on the exact prepared image used by the recorded Granite run, verified by image hash. BLIP returned a generic caption in 4.120 seconds excluding Python imports; Granite took 286.725 seconds and supplied more labels but misinterpreted A/B. Neither captured the key opposing arrow directions. Preserve both outputs and settings; retain Granite provisionally without claiming demonstrated accuracy superiority. This is a single configuration-level development case with assistant review, not a 40-image benchmark. See blip_granite_comparison.md.
 

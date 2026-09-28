@@ -1,5 +1,6 @@
 """Session-scoped notes, grounded dialogue and final reflection."""
 import threading
+import re
 from contextlib import contextmanager
 from fastapi import APIRouter, File, HTTPException, UploadFile
 from fastapi.responses import Response
@@ -10,6 +11,14 @@ from app.services.evidence import reply_sources
 from app.services import speech
 from app.services import vision
 from app.diagram_routes import add_diagram_routes
+from app.topic_figure_routes import add_topic_figure_routes
+from app.storage import figure_source
+
+
+def asks_to_explain_figure(text):
+    """Route an explicit figure request; this does not judge the explanation."""
+    return bool(re.search(r'\b(explain|discuss|look at|talk about|show|see)\b', text, re.I)
+                and re.search(r'\b(diagram|figure|image|graph|chart|picture)\b', text, re.I))
 
 
 class TurnInput(BaseModel):
@@ -54,7 +63,8 @@ def create_study_router(store):
         run = store.run(sid)
         messages = store.messages(sid)
         return {"session": session, "document": document, "messages": messages,
-                "diagram": store.diagram(sid),
+                "diagram": store.diagram(sid), "figures": store.figures(sid),
+                "active_figure_id": run['active_figure_id'] if run else None,
                 "reply_sources": reply_sources(messages, store.traces(sid)),
                 "started": run is not None, "finished": bool(run and run["finished"]),
                 "reflection": run["reflection"] if run else None,
@@ -132,16 +142,36 @@ def create_study_router(store):
                     raise HTTPException(422, 'This transcript does not belong to this session.')
             try:
                 diagram = store.diagram(sid)
+                figure = store.figure(sid, run['active_figure_id']) if run['active_figure_id'] else None
+                auto_selected = False
+                if not figure and not diagram and asks_to_explain_figure(body.text):
+                    reviewed = [item for item in store.figures(sid) if item['reviewed_caption']]
+                    if len(reviewed) == 1:
+                        figure = reviewed[0]
+                        auto_selected = True
                 query = topic + "\n" + messages[-1]["text"] + "\n" + body.text
                 if diagram:
                     query += '\nDiagram context: ' + diagram['approved_caption'][:1500]
+                if figure:
+                    query += '\nFigure context: ' + figure['reviewed_caption'][:1500]
                 sources = inference.retrieve(store.document(sid), query)
                 if diagram:
                     sources = [vision.diagram_source(diagram), *sources]
-                answer, trace = inference.reply(topic, messages, body.text, sources, run["model"])
+                if figure:
+                    sources = [figure_source(figure), *sources]
+                candidates = [] if figure or diagram else [
+                    {'id': item['id'], 'page': item['page'],
+                     'description': item['reviewed_caption'], 'printed_caption': item['printed_caption'],
+                     'page_in_retrieved_notes': any(source['page'] == item['page'] for source in sources)}
+                    for item in store.figures(sid) if item['reviewed_caption']]
+                answer, trace = inference.reply(topic, messages, body.text, sources, run["model"],
+                                                available_figures=candidates)
             except Exception as exc:
                 raise HTTPException(503, "Your buddy could not reply. Check that Ollama is running with the local model, then retry. Your message has not been saved twice.") from exc
             trace["sources"] = sources
+            if auto_selected:
+                store.select_figure(sid, figure['id'])
+                trace['figure_auto_selected'] = figure['id']
             if transcription:
                 trace['transcription'] = transcription
                 trace['transcription']['edited_before_send'] = transcription['text'] != body.text
@@ -184,10 +214,17 @@ def create_study_router(store):
                     for source in trace["sources"]:
                         if source.get('kind') == 'reviewed_diagram_description':
                             continue  # Included explicitly below, never assigned a fake retrieval score.
+                        if source.get('kind') == 'reviewed_figure_description':
+                            collected[source['id']] = source
+                            continue
                         existing = collected.get(source["id"])
                         if existing is None or source["similarity"] > existing["similarity"]:
                             collected[source["id"]] = source
-                sources = sorted(collected.values(), key=lambda item: item["similarity"], reverse=True)[:6]
+                figure_sources = [source for source in collected.values()
+                                  if source.get('kind') == 'reviewed_figure_description']
+                note_sources = [source for source in collected.values()
+                                if source.get('kind') != 'reviewed_figure_description']
+                sources = figure_sources[:3] + sorted(note_sources, key=lambda item: item["similarity"], reverse=True)[:6-len(figure_sources[:3])]
                 diagram = store.diagram(sid)
                 if diagram:
                     sources = [vision.diagram_source(diagram), *sources[:5]]
@@ -205,4 +242,5 @@ def create_study_router(store):
         return result
 
     add_diagram_routes(router, store, session_lock, detail)
+    add_topic_figure_routes(router, store, session_lock, detail)
     return router

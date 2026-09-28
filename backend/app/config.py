@@ -1,4 +1,4 @@
-"""Local paths. The setup checkpoint does not load any models."""
+"""Local paths for private session storage."""
 import os
 from pathlib import Path
 

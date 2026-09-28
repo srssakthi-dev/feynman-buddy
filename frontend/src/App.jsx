@@ -76,7 +76,7 @@ export default function App() {
   return (
     <div className="app-shell">
       <header className="topbar">
-        <a className="brand" href="/" aria-label="Feynman Buddy home"><span className="brand-icon" aria-hidden="true">f.</span>Feynman Buddy</a>
+        <a className="brand" href="/" aria-label="Explaino home"><span className="brand-icon" aria-hidden="true">e.</span>Explaino</a>
         <span className="local-badge"><span aria-hidden="true" /> Your local study space</span>
       </header>
       <main>
@@ -125,7 +125,7 @@ export default function App() {
               <li><span>2</span><div><strong>Bring your notes</strong><small>Give your buddy the material to learn from</small></div></li>
               <li><span>3</span><div><strong>Teach, explore, reflect</strong><small>Work through the ideas in your own words</small></div></li>
             </ol>
-            <div className="build-note"><strong>Your local practice space</strong><p>Teach by typing or recorded speech. You can also explore a diagram in a separate practice.</p></div>
+            <div className="build-note"><strong>Your local practice space</strong><p>Teach by typing or recorded speech, and bring selected figures into the conversation.</p></div>
           </section>
         </div>
         </>}

@@ -1,5 +1,9 @@
 # Current implementation audit
 
+## Update: integrated figure scope, 28 September 2026
+
+Optional figures now attach to the original topic conversation and are described locally by BLIP. The student reviews the description, can select a figure explicitly, and sees it beside the ordinary buddy dialogue. Retrieval page matches can offer a figure, but a suggestion is not forced and has not been shown consistently in real model output. Figure sources enter the same saved traces and final reflection; the old separate Granite sessions remain available for compatibility. A synthetic real-model walkthrough completed with BLIP, MiniLM and Qwen, but exposed a weak BLIP caption, 81.615 s and 69.674 s text-turn latency, 175.898 s reflection latency, a buddy pivot away from the figure, and a reflection observation that attributed an unspoken positive-gradient explanation to the student. The reflection prompt was revised and rechecked separately; see `topic_figure_implementation.md` and `evaluation/results/topic_figure_smoke_v1.json`. The historical table below is the 27 September audit, not the current status.
+
 Audit updated: 28 September 2026. This is the current status record; earlier checkpoint descriptions are historical. Evidence: active application source, supplied project-template brief, existing automated tests and the user's saved Sets session export. The four model paths are implemented; reliability and user benefit remain subject to evaluation. No validated mastery claim is made.
 
 ## Template identity and boundary
